@@ -1,0 +1,23 @@
+simulation:
+  grid_size: 2000
+  num_macro: 4
+  num_micro: 6
+  num_pico: 8
+  num_drones: 4
+  num_ues: 120
+  tx_power_macro: 43
+  tx_power_micro: 35
+  tx_power_pico: 28
+  tx_power_drone: 38
+  noise_power: -174
+  linucb_alpha: 1.0
+  drone_pg_lr: 0.003
+  drone_max_speed: 12.0
+  drone_z_min: 30.0
+  drone_z_max: 120.0
+  drone_update_interval: 10
+
+runtime:
+  steps: 50
+  run_tag: "fast"
+  figure_name: "6g_drone_fast_test.png"

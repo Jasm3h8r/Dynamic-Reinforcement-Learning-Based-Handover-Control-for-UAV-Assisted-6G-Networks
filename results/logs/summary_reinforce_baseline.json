@@ -1,0 +1,14 @@
+{
+  "total_steps": 12,
+  "policy_method": "reinforce",
+  "avg_sinr": 25.13699583302237,
+  "avg_throughput": 941629.0764017407,
+  "total_handovers": 449,
+  "avg_coverage": 80.58333333333333,
+  "final_regret": -9590.248916820807,
+  "avg_outage_prob": 0.0,
+  "avg_pingpong": 75.45527178554701,
+  "avg_cell_edge_rate": 707.0405105638388,
+  "drone_ho_reduction_final": 0.0,
+  "total_pg_updates": 6
+}

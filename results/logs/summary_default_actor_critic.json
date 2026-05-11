@@ -1,0 +1,17 @@
+{
+  "total_steps": 1,
+  "drone_controller": "actor_critic",
+  "avg_sinr": 34.14787064472208,
+  "avg_throughput": 375374.4852229965,
+  "total_handovers": 0,
+  "avg_coverage": 100.0,
+  "final_regret": -240.024485222998,
+  "avg_outage_prob": 0.0,
+  "avg_pingpong": 0.0,
+  "avg_cell_edge_rate": 1162.7204480216044,
+  "avg_fleet_soc": 0.7540253715657418,
+  "avg_fleet_efficiency": 73.69911070581942,
+  "total_energy_used_wh": 1.414816126559962,
+  "drone_ho_reduction_final": 0.0,
+  "total_pg_updates": 0
+}

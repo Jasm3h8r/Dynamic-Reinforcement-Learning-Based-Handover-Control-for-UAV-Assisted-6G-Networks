@@ -1,0 +1,24 @@
+simulation:
+  grid_size: 3000
+  num_macro: 4
+  num_micro: 8
+  num_pico: 12
+  num_drones: 6
+  num_ues: 300
+  tx_power_macro: 43
+  tx_power_micro: 35
+  tx_power_pico: 28
+  tx_power_drone: 38
+  noise_power: -174
+  linucb_alpha: 1.0
+  drone_pg_lr: 0.003
+  drone_max_speed: 15.0
+  drone_z_min: 30.0
+  drone_z_max: 150.0
+  drone_update_interval: 10
+  policy_method: "a2c"
+
+runtime:
+  steps: 200
+  run_tag: "a2c_policy"
+  figure_name: "comparison_a2c.png"

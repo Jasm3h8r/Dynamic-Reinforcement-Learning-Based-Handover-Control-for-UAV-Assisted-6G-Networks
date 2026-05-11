@@ -1,0 +1,107 @@
+{
+  "run_tag": "default",
+  "controllers": [
+    "actor_critic",
+    "soft_actor_critic"
+  ],
+  "steps": 1,
+  "seed": null,
+  "comparison_rows": [
+    {
+      "controller": "actor_critic",
+      "steps": 1,
+      "avg_sinr": 34.14787064472208,
+      "avg_throughput": 375374.4852229965,
+      "total_handovers": 0,
+      "avg_coverage": 100.0,
+      "final_regret": -240.024485222998,
+      "avg_outage_prob": 0.0,
+      "avg_pingpong": 0.0,
+      "avg_cell_edge_rate": 1162.7204480216044,
+      "avg_fleet_soc": 0.7540253715657418,
+      "avg_fleet_efficiency": 73.69911070581942,
+      "total_energy_used_wh": 1.414816126559962,
+      "drone_ho_reduction_final": 0.0,
+      "total_pg_updates": 0,
+      "metrics_path": "C:\\Users\\jasme\\OneDrive\\Desktop\\Proj-2\\results\\logs\\metrics_default_actor_critic.csv",
+      "summary_path": "C:\\Users\\jasme\\OneDrive\\Desktop\\Proj-2\\results\\logs\\summary_default_actor_critic.json",
+      "figure_path": null,
+      "throughput_vs_first_pct": 0.0,
+      "handovers_vs_first_pct": 0.0,
+      "outage_vs_first_pct": 0.0,
+      "efficiency_vs_first_pct": 0.0
+    },
+    {
+      "controller": "soft_actor_critic",
+      "steps": 1,
+      "avg_sinr": 33.90775993020362,
+      "avg_throughput": 380234.2839279595,
+      "total_handovers": 0,
+      "avg_coverage": 99.66666666666667,
+      "final_regret": -244.73428392796063,
+      "avg_outage_prob": 0.0,
+      "avg_pingpong": 0.0,
+      "avg_cell_edge_rate": 1145.2255364148537,
+      "avg_fleet_soc": 0.7361211379826603,
+      "avg_fleet_efficiency": 74.40773348570612,
+      "total_energy_used_wh": 1.4194846352190416,
+      "drone_ho_reduction_final": 0.0,
+      "total_pg_updates": 0,
+      "metrics_path": "C:\\Users\\jasme\\OneDrive\\Desktop\\Proj-2\\results\\logs\\metrics_default_soft_actor_critic.csv",
+      "summary_path": "C:\\Users\\jasme\\OneDrive\\Desktop\\Proj-2\\results\\logs\\summary_default_soft_actor_critic.json",
+      "figure_path": null,
+      "throughput_vs_first_pct": 1.2946534450992242,
+      "handovers_vs_first_pct": 0.0,
+      "outage_vs_first_pct": 0.0,
+      "efficiency_vs_first_pct": 0.9615079111541321
+    }
+  ],
+  "runs": [
+    {
+      "controller": "actor_critic",
+      "summary": {
+        "total_steps": 1,
+        "drone_controller": "actor_critic",
+        "avg_sinr": 34.14787064472208,
+        "avg_throughput": 375374.4852229965,
+        "total_handovers": 0,
+        "avg_coverage": 100.0,
+        "final_regret": -240.024485222998,
+        "avg_outage_prob": 0.0,
+        "avg_pingpong": 0.0,
+        "avg_cell_edge_rate": 1162.7204480216044,
+        "avg_fleet_soc": 0.7540253715657418,
+        "avg_fleet_efficiency": 73.69911070581942,
+        "total_energy_used_wh": 1.414816126559962,
+        "drone_ho_reduction_final": 0.0,
+        "total_pg_updates": 0
+      },
+      "metrics_path": "C:\\Users\\jasme\\OneDrive\\Desktop\\Proj-2\\results\\logs\\metrics_default_actor_critic.csv",
+      "summary_path": "C:\\Users\\jasme\\OneDrive\\Desktop\\Proj-2\\results\\logs\\summary_default_actor_critic.json",
+      "figure_path": null
+    },
+    {
+      "controller": "soft_actor_critic",
+      "summary": {
+        "total_steps": 1,
+        "drone_controller": "soft_actor_critic",
+        "avg_sinr": 33.90775993020362,
+        "avg_throughput": 380234.2839279595,
+        "total_handovers": 0,
+        "avg_coverage": 99.66666666666667,
+        "final_regret": -244.73428392796063,
+        "avg_outage_prob": 0.0,
+        "avg_pingpong": 0.0,
+        "avg_cell_edge_rate": 1145.2255364148537,
+        "avg_fleet_soc": 0.7361211379826603,
+        "avg_fleet_efficiency": 74.40773348570612,
+        "total_energy_used_wh": 1.4194846352190416,
+        "drone_ho_reduction_final": 0.0,
+        "total_pg_updates": 0
+      },
+      "metrics_path": "C:\\Users\\jasme\\OneDrive\\Desktop\\Proj-2\\results\\logs\\metrics_default_soft_actor_critic.csv",
+      "summary_path": "C:\\Users\\jasme\\OneDrive\\Desktop\\Proj-2\\results\\logs\\summary_default_soft_actor_critic.json",
+      "figure_path": null
+    }
+  ]
+}
