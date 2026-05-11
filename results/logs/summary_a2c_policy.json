@@ -1,14 +1,14 @@
 {
-  "total_steps": 12,
+  "total_steps": 200,
   "policy_method": "a2c",
-  "avg_sinr": -0.7640548364875276,
-  "avg_throughput": 307160.2852492395,
-  "total_handovers": 5,
-  "avg_coverage": 28.75,
-  "final_regret": -3447.4734229908727,
+  "avg_sinr": 20.830966519896037,
+  "avg_throughput": 529580.6699602652,
+  "total_handovers": 4606,
+  "avg_coverage": 79.93333333333334,
+  "final_regret": 16658.1590070776,
   "avg_outage_prob": 0.0,
-  "avg_pingpong": 50.0,
-  "avg_cell_edge_rate": 687.5176187496751,
-  "drone_ho_reduction_final": 0.0,
-  "total_pg_updates": 3
+  "avg_pingpong": 127.83729494578085,
+  "avg_cell_edge_rate": 26.52106558905133,
+  "drone_ho_reduction_final": 72.75204359673025,
+  "total_pg_updates": 114
 }

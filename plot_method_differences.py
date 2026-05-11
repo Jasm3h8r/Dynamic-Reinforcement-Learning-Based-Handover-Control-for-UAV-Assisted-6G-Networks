@@ -13,6 +13,21 @@ from pathlib import Path
 from compare_policies import compare_policies
 
 
+def _load_saved_summaries(project_root: Path):
+    summary_files = {
+        'REINFORCE': project_root / 'results/logs/summary_reinforce_baseline.json',
+        'A2C': project_root / 'results/logs/summary_a2c_policy.json',
+        'SAC': project_root / 'results/logs/summary_soft_a2c_policy.json',
+    }
+    loaded = {}
+    for method, path in summary_files.items():
+        if not path.exists():
+            return None
+        with open(path, 'r', encoding='utf-8') as f:
+            loaded[method] = json.load(f)
+    return loaded
+
+
 def plot_difference_analysis(project_root: str | Path = None, steps: int = 200, seed: int = 42):
     """Create comprehensive difference/comparison visualization."""
     
@@ -21,15 +36,16 @@ def plot_difference_analysis(project_root: str | Path = None, steps: int = 200, 
     else:
         project_root = Path(project_root)
     
-    # Run a seeded 200-step comparison so the plot is based on fresh, reproducible data
-    results = compare_policies(project_root=project_root, steps=steps, seed=seed, make_plot=False)
+    # Prefer already-completed summaries so the plot reflects the real 200-step runs.
+    data = _load_saved_summaries(project_root)
+    if data is None:
+        results = compare_policies(project_root=project_root, steps=steps, seed=seed, make_plot=False)
+        data = {
+            'REINFORCE': results['reinforce']['summary'],
+            'A2C': results['a2c']['summary'],
+            'SAC': results['soft_a2c']['summary'],
+        }
     method_names = ['REINFORCE', 'A2C', 'SAC']
-    
-    data = {
-        'REINFORCE': results['reinforce']['summary'],
-        'A2C': results['a2c']['summary'],
-        'SAC': results['soft_a2c']['summary'],
-    }
     
     # Create figure with 4 subplots (difference analysis)
     fig = plt.figure(figsize=(20, 14), facecolor='#0a0e1a')
@@ -64,7 +80,7 @@ def plot_difference_analysis(project_root: str | Path = None, steps: int = 200, 
     # Extract key metrics
     metrics = {
         'SINR (dB)': [data[m]['avg_sinr'] for m in method_names],
-        'Throughput (Mbps)': [data[m]['avg_throughput']/1e6 for m in method_names],
+        'Throughput (Mbps)': [data[m]['avg_throughput'] for m in method_names],
         'Handovers': [data[m]['total_handovers'] for m in method_names],
         'Coverage (%)': [data[m]['avg_coverage'] for m in method_names],
         'Cell-Edge (Mbps)': [data[m]['avg_cell_edge_rate'] for m in method_names],
@@ -97,7 +113,7 @@ def plot_difference_analysis(project_root: str | Path = None, steps: int = 200, 
     for bar, val in zip(bars, tp_vals):
         height = bar.get_height()
         ax2.text(bar.get_x() + bar.get_width()/2., height,
-                f'{val:.2f}', ha='center', va='bottom', color='white', fontsize=10, fontweight='bold')
+                f'{val:,.0f}', ha='center', va='bottom', color='white', fontsize=10, fontweight='bold')
     ax2.set_ylim([0, max(tp_vals) * 1.15])
     
     # 3. Handovers Comparison (Lower is better - use inverse color)
@@ -203,7 +219,7 @@ def plot_difference_analysis(project_root: str | Path = None, steps: int = 200, 
             if metric == 'Handovers':
                 row.append(f'{method}\n({int(val):,})')
             elif metric == 'Throughput':
-                row.append(f'{method}\n({val/1e6:.2f}M)')
+                row.append(f'{method}\n({val:,.0f})')
             else:
                 row.append(f'{method}\n({val:.1f})')
         table_data.append(row)
@@ -256,7 +272,7 @@ def plot_difference_analysis(project_root: str | Path = None, steps: int = 200, 
         for rank, (method, val) in enumerate(ranked, 1):
             medal = ['🥇', '🥈', '🥉'][rank-1]
             if metric == 'Throughput':
-                print(f"      {medal} {method:15} {val/1e6:8.2f} Mbps")
+                print(f"      {medal} {method:15} {val:8,.0f} Mbps")
             elif metric == 'Handovers':
                 print(f"      {medal} {method:15} {int(val):8,}")
             else:

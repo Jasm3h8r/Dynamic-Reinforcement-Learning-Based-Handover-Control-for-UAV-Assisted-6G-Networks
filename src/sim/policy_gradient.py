@@ -407,8 +407,11 @@ class PolicyNetworkSoftA2C(PolicyNetworkBase):
         self.log_std  = np.clip(self.log_std, -3.0, 1.5)
 
         # ── Critics ───────────────────────────────────────────────────────
-        d_c1 = 2.0 * (v1 - td_target)
-        d_c2 = 2.0 * (v2 - td_target)
+        # Use descent-consistent TD errors so critic minimizes squared TD loss.
+        td_err1 = td_target - v1
+        td_err2 = td_target - v2
+        d_c1 = 2.0 * td_err1
+        d_c2 = 2.0 * td_err2
         self.W_critic  += self.lr * self._clip_g(d_c1 * h.reshape(-1, 1))
         self.b_critic  += self.lr * self._clip_g(np.array([d_c1]))
         self.W_critic2 += self.lr * self._clip_g(d_c2 * h.reshape(-1, 1))

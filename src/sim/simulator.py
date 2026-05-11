@@ -273,6 +273,7 @@ class HetNet6GSimulator:
 
         # Baseline handover rate (before drone learning kicks in)
         self._baseline_ho_rate: Optional[float] = None
+        self._best_step_reward: float = 0.0
 
         self._initialize_hetnet()
         self._initialize_shadow_map()
@@ -487,7 +488,7 @@ class HetNet6GSimulator:
         # â”€â”€ CHARGING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         if drone.drone_state == DRONE_CHARGING:
             # Reward for charging progress (scaled by how empty it was)
-            charge_progress = min(drone.last_energy_draw_w * STEP_DURATION_S
+            charge_progress = min(max(-drone.last_energy_draw_w, 0.0) * STEP_DURATION_S
                                   / 3600.0 / BATTERY_CAPACITY_WH, 0.1)
             # Penalty: every step offline, nearby UEs may suffer
             nearby_struggling = sum(
@@ -862,9 +863,10 @@ class HetNet6GSimulator:
         sinr   = 10*np.log10(signal/(interference+noise))
         return np.clip(sinr, MIN_SINR_DB, MAX_SINR_DB)
 
-    def _throughput(self, sinr, bw_mhz):
+    def _throughput(self, sinr, bw_mhz, active_users=1):
         se = min(np.log2(1+10**(sinr/10)), MAX_SPECTRAL_EFFICIENCY_6G)
-        return bw_mhz * se
+        shared_bw_mhz = bw_mhz / max(active_users, 1)
+        return shared_bw_mhz * se
 
     def _get_context(self, user, bs, loads=None):
         d    = self._dist3d(user.x,user.y,user.z,bs.x,bs.y,bs.z)
@@ -942,6 +944,7 @@ class HetNet6GSimulator:
         self.step_metrics={k:[] for k in self.step_metrics}
         self.throughput_distribution=[]; self.sinr_samples=[]
         self._baseline_ho_rate=None
+        self._best_step_reward = 0.0
 
     # ------------------------------------------------------------------ #
     #  SIMULATION STEP                                                      #
@@ -1026,7 +1029,7 @@ class HetNet6GSimulator:
                 nonlocal actual_ho
                 bss = self.base_stations[bs_id]
                 sinr = self._sinr(user,bss,loads)
-                tput = self._throughput(sinr,bss.bandwidth_mhz)
+                tput = self._throughput(sinr, bss.bandwidth_mhz, bss.load + 1)
                 if bs_id != prev_bs and prev_bs is not None:
                     was_recent_handover = user.time_since_last_handover < 10
                     actual_ho=True; ho_count+=1
@@ -1034,8 +1037,10 @@ class HetNet6GSimulator:
                     if was_recent_handover:
                         pingpong+=1
                     # Track if caused by drone movement
-                    if bss.is_drone or (prev_bs is not None and self.base_stations[prev_bs].is_drone):
-                        bss.handovers_caused+=1
+                    if prev_bs is not None and self.base_stations[prev_bs].is_drone:
+                        self.base_stations[prev_bs].handovers_caused += 1
+                    if bss.is_drone:
+                        bss.handovers_caused += 1
                 elif actual_ho:
                     ho_count+=1; user.handover_count+=1; user.time_since_last_handover=0
 
@@ -1077,9 +1082,10 @@ class HetNet6GSimulator:
         self._move_drones(prev_ho, ho_count)
 
         # ---- Metrics ----
-        self.cmab.total_reward   += total_reward
-        self.cmab.optimal_reward += self.num_ues * 0.5
-        regret = self.cmab.optimal_reward - self.cmab.total_reward
+        self.cmab.total_reward += total_reward
+        self._best_step_reward = max(self._best_step_reward, total_reward)
+        self.cmab.optimal_reward += self._best_step_reward
+        regret = max(self.cmab.optimal_reward - self.cmab.total_reward, 0.0)
 
         avg_sinr  = total_sinr / max(connected,1)
         covered_ues = sum(1 for u in self.users if u.connected_bs is not None and u.sinr > 0.0)

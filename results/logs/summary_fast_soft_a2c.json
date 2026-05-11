@@ -1,0 +1,14 @@
+{
+  "total_steps": 50,
+  "policy_method": "soft_a2c",
+  "avg_sinr": 19.067502234580278,
+  "avg_throughput": 1269215.5698546423,
+  "total_handovers": 426,
+  "avg_coverage": 80.95,
+  "final_regret": 8853.648015773535,
+  "avg_outage_prob": 0.0,
+  "avg_pingpong": 18.08421985815603,
+  "avg_cell_edge_rate": 996.0611607524393,
+  "drone_ho_reduction_final": 100.0,
+  "total_pg_updates": 16
+}

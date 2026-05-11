@@ -44,11 +44,11 @@ def compare_policies(project_root: str | Path = None, steps: int = 200, seed: in
             project_root=project_root,
             steps_override=steps,
             seed=seed,
-            make_plot=False,  # We'll create a custom comparison plot
+            make_plot=make_plot,  # Respect caller's make_plot request for per-method plots
         )
         
         results[method] = result
-        print(f"✓ {method.upper()} complete: summary saved to {result['summary_path']}")
+        print(f"[OK] {method.upper()} complete: summary saved to {result['summary_path']}")
     
     if make_plot and results:
         create_comparison_visualization(results, project_root)
